@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Earn Tips 24</title>
+  <title>Earn Tips 24 | আপনার উপার্জন এর এক অনন্য সম্ভাবনার আলো </title>
   <!-- OneSignal SDK -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
@@ -289,41 +290,6 @@
     <i class="material-icons like-button" id="post4" onclick="likePost('post4')">thumb_up</i>
   </div>
   <script>
-  // Firebase config
-  const firebaseConfig = {
-  apiKey: "AIzaSyCNMgOxSjhBQVHxDWbCkunQOAaIe7MKLgQ",
-  authDomain: "bonus-apply.firebaseapp.com",
-  projectId: "bonus-apply",
-  storageBucket: "bonus-apply.appspot.com",
-  messagingSenderId: "313039289662",
-  appId: "1:313039289662:web:8116db3664e5b5cd34006f"
-  };
-  
-  firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
-  
-  // Request Notification Permission
-  messaging.requestPermission()
-  .then(() => messaging.getToken({ vapidKey: "YOUR_PUBLIC_VAPID_KEY" }))
-  .then(token => {
-  console.log("FCM Token:", token);
-  // এখানে তোমার সার্ভারে টোকেন পাঠানো যেতে পারে
-  })
-  .catch(err => {
-  console.warn("Notification permission denied", err);
-  });
-  
-  // Receive notification when app is in foreground
-  messaging.onMessage(payload => {
-  const { title, body, icon } = payload.notification;
-  new Notification(title, {
-  body: body,
-  icon: icon
-  });
-  });
-  </script>
-
-  <script>
     function toggleMenu() {
       const menu = document.getElementById('menu');
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
@@ -564,3 +530,4 @@
     </div>
     </div>
     </div>
+    
