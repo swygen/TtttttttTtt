@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earn Tips 24 | আপনার উপার্জন এর এক অনন্য সম্ভাবনার আলো </title>
   <!-- OneSignal SDK -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
@@ -14,7 +13,7 @@
       appId: "5da583fd-f017-4bc9-ad7a-448b286f1918", // আপনার App ID
       notifyButton: { enable: true }, // Bell icon দেখাবে
       promptOptions: {
-        slidedown: {
+        modal: { // Modal প্রম্পট ব্যবহার করবেন
           enabled: true,
           actionMessage: "Earn Tips 24 থেকে নতুন আপডেট পেতে নোটিফিকেশন চালু করুন।",
           acceptButtonText: "Allow",
