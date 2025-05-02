@@ -603,3 +603,40 @@
     </div>
     </div>
     </div>
+    <br>
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCdyMFDsMzkprimG3YKiS3Ipbq17rtASKI",
+  authDomain: "game-wev.firebaseapp.com",
+  projectId: "game-wev",
+  storageBucket: "game-wev.firebasestorage.app",
+  messagingSenderId: "191658439875",
+  appId: "1:191658439875:web:084d88f50f4dd6a6ee9e76"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const messaging = getMessaging(app);
+
+Notification.requestPermission().then((permission) => {
+  if (permission === "granted") {
+    getToken(messaging, {
+      vapidKey: "BC-Tw5sigCnGd4Mk20EhVoC-Snfkg1enDS8ZynAg6mcFwXKcCFxvP_tUXHY2VyOpRAp9iEwnI_x8Ow-pCTAqrxY"
+    }).then(async (currentToken) => {
+      if (currentToken) {
+        console.log("Token:", currentToken);
+
+        // Firestore-এ Token Save করুন
+        await addDoc(collection(db, "user_tokens"), {
+          token: currentToken,
+          timestamp: new Date()
+        });
+      }
+    });
+  }
+});
+    </script>
