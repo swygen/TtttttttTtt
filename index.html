@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Panel</title>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js"></script>
+</head>
+<body>
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdyMFDsMzkprimG3YKiS3Ipbq17rtASKI",
+      authDomain: "game-wev.firebaseapp.com",
+      projectId: "game-wev",
+      storageBucket: "game-wev.firebasestorage.app",
+      messagingSenderId: "191658439875",
+      appId: "1:191658439875:web:084d88f50f4dd6a6ee9e76"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // Request notification permission and get token
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        messaging.getToken({ vapidKey: 'BC-Tw5sigCnGd4Mk20EhVoC-Snfkg1enDS8ZynAg6mcFwXKcCFxvP_tUXHY2VyOpRAp9iEwnI_x8Ow-pCTAqrxY' })
+          .then((currentToken) => {
+            if (currentToken) {
+              console.log("FCM Token: " + currentToken);
+              // You can send this token to your backend for notification
+            }
+          })
+          .catch((err) => {
+            console.log("Error getting token: ", err);
+          });
+      }
+    });
+
+    // Handle incoming messages
+    messaging.onMessage((payload) => {
+      // This will handle messages while the page is open
+      console.log("Message received: ", payload);
+      // You can process the payload further or show a custom notification
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earn Tips 24</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+      color: #333;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-area img {
+      height: 50px;
+    }
+    .logo-area span {
+      font-weight: 700;
+      font-size: 24px;
+      color: #1e88e5;
+      letter-spacing: 1px;
+    }
+    nav {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #fff;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px;
+      font-weight: bold;
+    }
+    .menu-icon {
+      cursor: pointer;
+      font-size: 24px;
+      color: #1e88e5;
+    }
+    .slider {
+      width: 100%;
+      overflow: hidden;
+      margin: 10px 0;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .slides {
+      display: flex;
+      animation: slide 9s infinite;
+    }
+    .slides img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      33% { transform: translateX(-100%); }
+      66% { transform: translateX(-200%); }
+      100% { transform: translateX(0); }
+    }
+    .intro {
+      text-align: center;
+      padding: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+    }
+    .stats {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+    .highlight {
+      background: #fff;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .post {
+      background: #fff;
+      margin: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .post img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .post p {
+      margin: 15px 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .go-button {
+      background: #1e88e5;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .go-button:hover {
+      background: #1565c0;
+    }
+    .like-view {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .like-button {
+      color: red;
+      cursor: pointer;
+      font-size: 24px;
+    }
+    .like-button.liked {
+      color: #ff5722;
+    }
+    .menu-icon:hover, .go-button:hover {
+      transform: scale(1.1);
+      transition: all 0.3s ease;
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 100%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-area">
+      <img src="https://i.postimg.cc/4yHN5dp6/refer-earn-logo-with-vector-arrow-megaphone-creative-concept-refer-friend-sticker-375539-1164.jpg" alt="Logo">
+      <span>Earn Tips 24</span>
+    </div>
+    <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+    <nav id="menu">
+      <a href="suport.html">Support</a>
+      <a href="https://t.me/Earn_Tips_24_bot">Join Bot</a>
+      <a href="policy">Privacy Policy</a>
+    </nav>
+  </header>
+
+  <div class="slider">
+    <div class="slides">
+      <img src="https://i.postimg.cc/MGMfY4LR/20250501-102427.jpg" alt="Slide 1">
+      <img src="https://i.postimg.cc/fW05bqTV/20250501-101847.jpg" alt="Slide 2">
+      <img src="https://i.postimg.cc/fLdXMFjZ/20250501-102212.jpg" alt="Slide 3">
+    </div>
+  </div>
+
+  <div class="intro">
+    Earn Tips 24 এ সকল প্রকার অনলাইন এ ইনকাম করার Tips গুলো পেয়ে যাবেন ১০০% সঠিক এবং পেমেন্ট প্রুফ সহ
+  </div>
+
+  <div class="stats">
+    <span class="tooltip">10000+ <i class="fas fa-thumbs-up"></i>
+      <span class="tooltiptext">Click to Like</span>
+    </span> | 20800+ Visitor
+  </div>
+  <br>
+
+  <div class="highlight">
+    Top Verify Income Site & Tips
+  </div> <br>
+
+  <div class="post">
+    <img src="https://i.postimg.cc/c4gQTC74/images-6.jpg">
+    <p>📱 মোবাইল ফোন এর মাধ্যমে জিমেইল একাউন্ট তৈরি করে বিক্রি করুন এবং টাকা উপার্জন করতে নিচের GO অপশন এ ক্লিক করুন ♻️</p>
+    <button class="go-button" onclick="location.href='link1.html'">GO</button>
+    <div class="like-view">
+      <span>5000+ Like</span> | <span>8580+ View</span>
+    </div>
+    <i class="material-icons like-button" id="post1" onclick="likePost('post1')">thumb_up</i>
+  </div>
+
+  <div class="post">
+    <img src="https://i.postimg.cc/ZqnkSygm/Whatsapp-marketing-blog-Oct-2022-1.png">
+    <p>📱 মোবাইল ফোন এর মাধ্যমে Whatsapp একাউন্ট তৈরি করে বিক্রি করুন এবং টাকা উপার্জন করতে নিচের GO অপশন এ ক্লিক করুন ♻️</p>
+    <button class="go-button" onclick="location.href='link2.html'">GO</button>
+    <div class="like-view">
+      <span>6000+ Like</span> | <span>8980+ View</span>
+    </div>
+    <i class="material-icons like-button" id="post2" onclick="likePost('post2')">thumb_up</i>
+  </div>
+
+  <div class="post">
+    <img src="https://i.postimg.cc/ZY74XV2n/images-5.jpg">
+    <p>📱 মোবাইল ফোন এর মাধ্যমে BDT GAME খেলে টাকা উপার্জন করতে নিচের লিংকে ক্লিক করুন ♻️</p>
+    <button class="go-button" onclick="location.href='link3.html'">GO</button>
+    <div class="like-view">
+      <span>9870+ Like</span> | <span>10000+ View</span>
+    </div>
+    <i class="material-icons like-button" id="post3" onclick="likePost('post3')">thumb_up</i>
+  </div>
+
+  <div class="post">
+    <img src="https://i.postimg.cc/25MpGS5x/selection-modern-gadgets-182292-46.webp">
+    <p>স্বল্প মূল্যে সকল প্রকার Web+App+Bot তৈরি করে ইনকাম শুরু করতে নিচের GO অপশন এ ক্লিক করুন ♻️</p>
+    <button class="go-button" onclick="location.href='link4.html'">GO</button>
+    <div class="like-view">
+      <span>5740+ Like</span> | <span>8800+ View</span>
+    </div>
+    <i class="material-icons like-button" id="post4" onclick="likePost('post4')">thumb_up</i>
+  </div>
+  <script>
+  // Firebase config
+  const firebaseConfig = {
+  apiKey: "AIzaSyCNMgOxSjhBQVHxDWbCkunQOAaIe7MKLgQ",
+  authDomain: "bonus-apply.firebaseapp.com",
+  projectId: "bonus-apply",
+  storageBucket: "bonus-apply.appspot.com",
+  messagingSenderId: "313039289662",
+  appId: "1:313039289662:web:8116db3664e5b5cd34006f"
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
+  
+  // Request Notification Permission
+  messaging.requestPermission()
+  .then(() => messaging.getToken({ vapidKey: "YOUR_PUBLIC_VAPID_KEY" }))
+  .then(token => {
+  console.log("FCM Token:", token);
+  // এখানে তোমার সার্ভারে টোকেন পাঠানো যেতে পারে
+  })
+  .catch(err => {
+  console.warn("Notification permission denied", err);
+  });
+  
+  // Receive notification when app is in foreground
+  messaging.onMessage(payload => {
+  const { title, body, icon } = payload.notification;
+  new Notification(title, {
+  body: body,
+  icon: icon
+  });
+  });
+  </script>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function likePost(postId) {
+      let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
+      if (!likedPosts.includes(postId)) {
+        likedPosts.push(postId);
+        localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+        document.getElementById(postId).classList.add('liked');
+        alert('আপনার লাইক সফলভাবে যোগ করা হয়েছে!');
+      }
+    }
+
+    window.onload = function() {
+      let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
+      likedPosts.forEach(postId => {
+        const button = document.querySelector(`#${postId} .like-button`);
+        if (button) button.classList.add('liked');
+      });
+    };
+  </script>
+</body>
+</html>
+<div style="all: initial;">
+  <div style="display: flex; justify-content: center; align-items: center; padding: 40px; font-family: 'Poppins', sans-serif;">
+    <a href="https://t.me/Earn_Tips_24_bot" target="_blank" style="text-decoration: none;">
+      <div style="
+        backdrop-filter: blur(12px);
+        background: linear-gradient(135deg, rgba(72,0,255,0.3), rgba(255,0,150,0.2));
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 25px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 16px 40px rgba(0,0,0,0.4)'" 
+         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.3)'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" style="height: 36px; width: 36px;">
+        <span style="font-size: 20px; font-weight: 600; color: #ffffff; letter-spacing: 0.5px;">
+          Join Our Official Telegram Bot
+        </span>
+      </div>
+    </a>
+  </div>
+</div>
+
+    <div id="feedback-wrapper"></div>
+    
+    <script>
+    const feedbackHTML = `
+    <div class="exclusive-feedback-container">
+    <form class="exclusive-form">
+    <h2><span class="material-symbols-outlined">feedback</span> Give Us Feedback</h2>
+    <input type="text" placeholder="Your Name" required />
+    <input type="email" placeholder="Your Email" required />
+    <textarea rows="4" placeholder="Write your feedback..." required></textarea>
+    <button type="submit"><span class="material-symbols-outlined">send</span> Submit</button>
+    <div class="success-box"><span class="material-symbols-outlined">verified</span> Feedback received successfully!</div>
+    </form>
+    </div>
+    
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Material+Symbols+Outlined');
+    
+    .exclusive-feedback-container {
+    font-family: 'Poppins', sans-serif;
+    max-width: 480px;
+    margin: 40px auto;
+    background: linear-gradient(135deg, #1d2b64, #f8cdda);
+    padding: 35px;
+    border-radius: 22px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+    color: white;
+    }
+    
+    .exclusive-form h2 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    }
+    
+    .exclusive-form input,
+    .exclusive-form textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transition: background 0.3s;
+    }
+    
+    .exclusive-form input::placeholder,
+    .exclusive-form textarea::placeholder {
+    color: rgba(255,255,255,0.75);
+    }
+    
+    .exclusive-form input:focus,
+    .exclusive-form textarea:focus {
+    background: rgba(255,255,255,0.25);
+    outline: none;
+    }
+    
+    .exclusive-form button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0,198,255,0.4);
+    transition: transform 0.2s;
+    }
+    
+    .exclusive-form button:hover {
+    transform: scale(1.05);
+    }
+    
+    .success-box {
+    display: none;
+    margin-top: 20px;
+    background: rgba(0,255,135,0.1);
+    padding: 15px;
+    border: 1px solid #00ffb3;
+    color: #00ffb3;
+    border-radius: 10px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .success-box .material-symbols-outlined {
+    vertical-align: middle;
+    font-size: 20px;
+    margin-right: 6px;
+    }
+    
+    @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+    }
+    </style>
+    `;
+    
+    document.querySelector("#feedback-wrapper").innerHTML = feedbackHTML;
+    
+    const form = document.querySelector(".exclusive-form");
+    const success = document.querySelector(".success-box");
+    
+    form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    success.style.display = "block";
+    form.reset();
+    setTimeout(() => success.style.display = "none", 5000);
+    });
+    </script>
+    <div style="all: initial;">
+    <div style="font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; padding: 40px 20px; background: linear-gradient(135deg, #f5af19, #f12711); color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    
+    <!-- Rating Title -->
+    <div style="font-size: 24px; font-weight: 600; margin-bottom: 12px;">
+    Customer Rating
+    </div>
+    
+    <!-- Rating Stars -->
+    <div style="display: flex; gap: 5px; margin-bottom: 12px;">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFD700">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFD700">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFD700">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFD700">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#FFD700">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" fill="#B0B0B0">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    </div>
+    
+    <!-- Rating Text -->
+    <div style="font-size: 18px; font-weight: 500; opacity: 0.8;">
+    4.8 out of 5
+    </div>
+    </div>
+    </div>
+    </div>
+    <br><br>
+    <div style="all: initial;">
+    <div style="font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #2d3436, #000000); color: white; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px;">
+    
+    <!-- Logo and Name -->
+    <div style="display: flex; align-items: center; gap: 12px;">
+    <img src="https://i.postimg.cc/4yHN5dp6/refer-earn-logo-with-vector-arrow-megaphone-creative-concept-refer-friend-sticker-375539-1164.jpg" alt="Earn Tips 24 Logo" style="width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4);">
+    <span style="font-size: 20px; font-weight: 600;">Earn Tips 24</span>
+    </div>
+    
+    <!-- Social Icons -->
+    <div style="display: flex; gap: 18px; justify-content: center;">
+    <a href="https://t.me/Earn_Tips_24_bot" target="_blank" style="text-decoration: none;">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt="Telegram" style="width: 28px; height: 28px; filter: invert(1);">
+    </a>
+    <a href="#" target="_blank" style="text-decoration: none;">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" style="width: 28px; height: 28px; filter: invert(1);">
+    </a>
+    <a href="#" target="_blank" style="text-decoration: none;">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" style="width: 28px; height: 28px; filter: invert(1);">
+    </a>
+    </div>
+    
+    <!-- Copyright -->
+    <div style="font-size: 14px; opacity: 0.7;">
+    © 2025 Earn Tips 24. All rights reserved.
+    </div>
+    </div>
+    </div>
